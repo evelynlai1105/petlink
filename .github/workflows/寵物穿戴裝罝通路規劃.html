@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寵物穿戴裝置 B2B 通路規劃</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Microsoft JhengHei', 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .dashboard { max-width: 1600px; margin: 0 auto; }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeInDown 0.8s ease;
+        }
+        
+        .header h1 {
+            color: white;
+            font-size: 3em;
+            font-weight: 700;
+            text-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        
+        .tab-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .tab-button {
+            padding: 15px 30px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-button:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+        }
+        
+        .tab-button.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        
+        .tab-content { display: none; animation: fadeInUp 0.5s ease; }
+        .tab-content.active { display: block; }
+        
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .stat-icon { font-size: 3em; display: block; margin-bottom: 15px; }
+        
+        .stat-number {
+            font-size: 3em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 10px 0;
+        }
+        
+        .stat-label { color: #666; font-size: 1.1em; font-weight: 600; }
+        .stat-sublabel { color: #999; font-size: 0.9em; margin-top: 5px; }
+        
+        .progress-bar {
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 1s ease;
+        }
+        
+        .swot-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .swot-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .swot-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .swot-list { list-style: none; padding: 0; }
+        
+        .swot-list li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            color: #555;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .swot-list li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            font-weight: 700;
+            font-size: 1.2em;
+        }
+        
+        .strengths .swot-list li:before { color: #6bcf7f; }
+        .weaknesses .swot-list li:before { color: #ff6b6b; }
+        .opportunities .swot-list li:before { color: #4fc3f7; }
+        .threats .swot-list li:before { color: #ffd93d; }
+        
+        .mindmap-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .center-node {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 50px;
+            border-radius: 50px;
+            font-size: 1.5em;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            margin-bottom: 50px;
+            text-align: center;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        
+        .branch {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .branch:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .branch-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid;
+        }
+        
+        .branch1 .branch-title { color: #4fc3f7; border-color: #4fc3f7; }
+        .branch2 .branch-title { color: #92d050; border-color: #92d050; }
+        .branch3 .branch-title { color: #ffa726; border-color: #ffa726; }
+        .branch4 .branch-title { color: #ff6b6b; border-color: #ff6b6b; }
+        
+        .main-card {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .card-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .card-title::before {
+            content: '';
+            width: 5px;
+            height: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 3px;
+        }
+        
+        .timeline {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .timeline-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .timeline-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 27px;
+            top: 60px;
+            width: 2px;
+            height: calc(100% + 10px);
+            background: linear-gradient(180deg, #667eea, #764ba2);
+        }
+        
+        .timeline-dot {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1em;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            flex-shrink: 0;
+        }
+        
+        .timeline-content {
+            flex: 1;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            border-radius: 15px;
+        }
+        
+        .timeline-month {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+        
+        .timeline-title {
+            font-size: 1.05em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .timeline-target {
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 1200px) {
+            .mindmap-container > div[style*="position: relative"] {
+                position: static !important;
+                min-height: auto !important;
+                display: block !important;
+            }
+            .mindmap-container > div > div[style*="position: absolute"] {
+                position: static !important;
+                width: 100% !important;
+                margin: 20px 0 !important;
+            }
+            .mindmap-container svg {
+                display: none !important;
+            }
+            .center-node {
+                position: static !important;
+                transform: none !important;
+                margin: 20px auto !important;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2em; }
+            .swot-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header">
+            <h1>🐾 寵物穿戴裝置 B2B 通路規劃</h1>
+        </div>
+        
+        <div class="tab-nav">
+            <button class="tab-button active" data-tab="overview">📊 市場概況</button>
+            <button class="tab-button" data-tab="mindmap">🧠 心智圖</button>
+            <button class="tab-button" data-tab="channels">🪧 通路清單</button>
+            <button class="tab-button" data-tab="strategy">📈 開發策略</button>
+        </div>
+        
+        <div class="tab-content active" id="overview">
+            <div class="stats-section">
+                <div class="stat-card">
+                    <span class="stat-icon">🏥</span>
+                    <div class="stat-number">1,590</div>
+                    <div class="stat-label">動物醫院總數</div>
+                    <div class="stat-sublabel">北部46% · 南部27% · 中部23%</div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 46%;"></div></div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">🛒</span>
+                    <div class="stat-number">1,682</div>
+                    <div class="stat-label">寵物店總數</div>
+                    <div class="stat-sublabel">連鎖品牌 + 區域店家</div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 52%;"></div></div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">🎯</span>
+                    <div class="stat-number">3,272</div>
+                    <div class="stat-label">潛在B2B客戶</div>
+                    <div class="stat-sublabel">總體市場規模</div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 100%;"></div></div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">⏰</span>
+                    <div class="stat-number">13+</div>
+                    <div class="stat-label">24H急診城市</div>
+                    <div class="stat-sublabel">高價值目標客戶</div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 75%;"></div></div>
+                </div>
+            </div>
+            
+            <div class="swot-grid">
+                <div class="swot-card strengths">
+                    <h3 class="swot-title"><span>💪</span> 優勢 (Strengths)</h3>
+                    <ul class="swot-list">
+                        <li>產品創新性高，具備科技感</li>
+                        <li>健康監測功能完整</li>
+                        <li>醫療級數據準確度</li>
+                        <li>差異化競爭優勢明顯</li>
+                        <li>可提供數據分析服務</li>
+                    </ul>
+                </div>
+                <div class="swot-card weaknesses">
+                    <h3 class="swot-title"><span>⚠️</span> 劣勢 (Weaknesses)</h3>
+                    <ul class="swot-list">
+                        <li>價格相對較高</li>
+                        <li>需要投入使用教育成本</li>
+                        <li>品牌知名度待建立</li>
+                        <li>售後服務需求較高</li>
+                        <li>初期推廣困難</li>
+                    </ul>
+                </div>
+                <div class="swot-card opportunities">
+                    <h3 class="swot-title"><span>🚀</span> 機會 (Opportunities)</h3>
+                    <ul class="swot-list">
+                        <li>3,272家潛在B2B客戶</li>
+                        <li>連鎖體系可快速拓展</li>
+                        <li>專科醫院需求明確</li>
+                        <li>24小時急診市場</li>
+                        <li>寵物經濟持續成長</li>
+                        <li>飼主健康意識提升</li>
+                    </ul>
+                </div>
+                <div class="swot-card threats">
+                    <h3 class="swot-title"><span>⚡</span> 威脅 (Threats)</h3>
+                    <ul class="swot-list">
+                        <li>競品陸續進入市場</li>
+                        <li>通路已有合作供應商</li>
+                        <li>價格競爭壓力</li>
+                        <li>技術更新速度快</li>
+                        <li>市場接受度不確定</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="mindmap">
+            <div class="mindmap-container">
+                <div style="position: relative; min-height: 900px; display: flex; align-items: center; justify-content: center;">
+                    <!-- 中央節點 -->
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10;">
+                        <div class="center-node">寵物穿戴裝置<br>B2B 通路規劃</div>
+                    </div>
+                    
+                    <!-- 左上分支：市場分析 -->
+                    <div style="position: absolute; top: 10%; left: 5%; width: 350px;">
+                        <div class="branch branch1">
+                            <div class="branch-title">📊 市場分析</div>
+                            <div style="font-size: 0.9em; color: #666; line-height: 1.8;">
+                                <div style="margin: 10px 0;"><strong>PEST分析：</strong></div>
+                                <div>• 政治：法規完善</div>
+                                <div>• 經濟：市場成長</div>
+                                <div>• 社會：寵物化趨勢</div>
+                                <div>• 科技：IoT成熟</div>
+                                <div style="margin: 10px 0;"><strong>市場規模：</strong></div>
+                                <div>• 1,590家動物醫院</div>
+                                <div>• 1,682家寵物店</div>
+                                <div>• 3,272家總客戶</div>
+                            </div>
+                        </div>
+                        <!-- 連接線 -->
+                        <svg style="position: absolute; top: 50%; right: -120px; width: 120px; height: 200px; pointer-events: none;">
+                            <line x1="0" y1="100" x2="120" y2="100" stroke="#4fc3f7" stroke-width="3" stroke-dasharray="5,5"/>
+                        </svg>
+                    </div>
+                    
+                    <!-- 右上分支：目標通路 -->
+                    <div style="position: absolute; top: 10%; right: 5%; width: 350px;">
+                        <div class="branch branch2">
+                            <div class="branch-title">🪧 目標通路</div>
+                            <div style="font-size: 0.9em; color: #666; line-height: 1.8;">
+                                <div style="margin: 10px 0;"><strong>動物醫院：</strong></div>
+                                <div>🔴 連鎖總部（最優先）</div>
+                                <div>🔴 24H急診（最優先）</div>
+                                <div>🟡 專科醫院（次優先）</div>
+                                <div>🟢 一般醫院（全面鋪貨）</div>
+                                <div style="margin: 10px 0;"><strong>寵物店：</strong></div>
+                                <div>🔴 大型連鎖</div>
+                                <div>🟢 區域店家</div>
+                            </div>
+                        </div>
+                        <!-- 連接線 -->
+                        <svg style="position: absolute; top: 50%; left: -120px; width: 120px; height: 200px; pointer-events: none;">
+                            <line x1="120" y1="100" x2="0" y2="100" stroke="#92d050" stroke-width="3" stroke-dasharray="5,5"/>
+                        </svg>
+                    </div>
+                    
+                    <!-- 左下分支：銷售策略 -->
+                    <div style="position: absolute; bottom: 10%; left: 5%; width: 350px;">
+                        <div class="branch branch3">
+                            <div class="branch-title">💡 銷售策略</div>
+                            <div style="font-size: 0.9em; color: #666; line-height: 1.8;">
+                                <div style="margin: 10px 0;"><strong>4P策略：</strong></div>
+                                <div>• Product：健康監測</div>
+                                <div>• Price：批發40-50%</div>
+                                <div>• Promotion：教育訓練</div>
+                                <div>• Place：連鎖優先</div>
+                                <div style="margin: 10px 0;"><strong>合作模式：</strong></div>
+                                <div>• 批發：中大型店家</div>
+                                <div>• 寄賣：零風險</div>
+                                <div>• 獨家：區域保護</div>
+                            </div>
+                        </div>
+                        <!-- 連接線 -->
+                        <svg style="position: absolute; bottom: 50%; right: -120px; width: 120px; height: 200px; pointer-events: none;">
+                            <line x1="0" y1="100" x2="120" y2="100" stroke="#ffa726" stroke-width="3" stroke-dasharray="5,5"/>
+                        </svg>
+                    </div>
+                    
+                    <!-- 右下分支：執行方案 -->
+                    <div style="position: absolute; bottom: 10%; right: 5%; width: 350px;">
+                        <div class="branch branch4">
+                            <div class="branch-title">⏰ 執行方案</div>
+                            <div style="font-size: 0.9em; color: #666; line-height: 1.8;">
+                                <div style="margin: 10px 0;"><strong>5階段時程：</strong></div>
+                                <div>• 1-2月：連鎖體系</div>
+                                <div>• 3-4月：專科急診</div>
+                                <div>• 5-6月：區域擴張</div>
+                                <div>• 7-9月：全面鋪貨</div>
+                                <div>• 10-12月：優化深耕</div>
+                                <div style="margin: 10px 0;"><strong>12月目標：</strong></div>
+                                <div>✓ 300家簽約</div>
+                                <div>✓ 500個鋪貨點</div>
+                                <div>✓ 1,500台/月</div>
+                            </div>
+                        </div>
+                        <!-- 連接線 -->
+                        <svg style="position: absolute; bottom: 50%; left: -120px; width: 120px; height: 200px; pointer-events: none;">
+                            <line x1="120" y1="100" x2="0" y2="100" stroke="#ff6b6b" stroke-width="3" stroke-dasharray="5,5"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="channels">
+            <div class="main-card">
+                <h2 class="card-title">目標通路清單與優先順序</h2>
+                
+                <h3 style="color: #667eea; margin: 30px 0 15px 0; font-size: 1.3em;">🏥 動物醫院通路（1,590家）</h3>
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 40px;">
+                    <thead>
+                        <tr style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <th style="padding: 15px; text-align: left; color: white; font-weight: 600;">類型</th>
+                            <th style="padding: 15px; text-align: left; color: white; font-weight: 600;">名稱</th>
+                            <th style="padding: 15px; text-align: left; color: white; font-weight: 600;">特色</th>
+                            <th style="padding: 15px; text-align: center; color: white; font-weight: 600;">優先級</th>
+                            <th style="padding: 15px; text-align: left; color: white; font-weight: 600;">預期效益</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #e9ecef;">
+                            <td style="padding: 15px; font-weight: 600;">連鎖總部</td>
+                            <td style="padding: 15px;">全國動物醫院</td>
+                            <td style="padding: 15px;">全台多家分院</td>
+                            <td style="padding: 15px; text-align: center;"><span style="background: #ff6b6b; color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.9em; font-weight: 600;">最優先</span></td>
+                            <td style="padding: 15px;">一次進入多點通路</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e9ecef; background: #f8f9fa;">
+                            <td style="padding: 15px; font-weight: 600;">連鎖總部</td>
+                            <td style="padding: 15px;">慈愛動物醫院</td>
+                            <td style="padding: 15px;">台中·台南總院</td>
+                            <td style="padding: 15px; text-align: center;"><span style="background: #ff6b6b; color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.9em; font-weight: 600;">最優先</span></td>
+                            <td style="padding: 15px;">中南部市場領導者</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e9ecef;">
+                            <td style="padding: 15px; font-weight: 600;">24H急診</td>
+                            <td style="padding: 15px;">上弦動物醫院</td>
+                            <td style="padding: 15px;">新北林口24小時</td>
+                            <td style="padding: 15px; text-align: center;"><span style="background: #ff6b6b; color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.9em; font-weight: 600;">最優先</span></td>
+                            <td style="padding: 15px;">急診監測需求強</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e9ecef; background: #f8f9fa;">
+                            <td style="padding: 15px; font-weight: 600;">專科醫院</td>
+                            <td style="padding: 15px;">台中8家專科</td>
+                            <td style="padding: 15px;">剖米哈利·樂晨等</td>
+                            <td style="padding: 15px; text-align: center;"><span style="background: #ffd93d; color: #333; padding: 5px 15px; border-radius: 20px; font-size: 0.9em; font-weight: 600;">次優先</span></td>
+                            <td style="padding: 15px;">專業醫療背書</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e9ecef;">
+                            <td style="padding: 15px; font-weight: 600;">一般醫院</td>
+                            <td style="padding: 15px;">台北市249家</td>
+                            <td style="padding: 15px;">密度最高區域</td>
+                            <td style="padding: 15px; text-align: center;"><span style="background: #6bcf7f; color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.9em; font-weight: 600;">全面鋪貨</span></td>
+                            <td style="padding: 15px;">市場覆蓋率</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3 style="color: #667eea; margin: 30px 0 15px 0; font-size: 1.3em;">🛒 寵物店通路（1,682家）</h3>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <th style="padding: 15px; text-align: left; color: white; font-weight: 600;">類型</th>
+                            <th style="padding: 15px; text-align: left; color: white; font-weight: 600;">名稱</th>
+                            <th style="padding: 15px; text-align: left; color: white; font-weight: 600;">特色</th>
+                            <th style="padding: 15px; text-align: center; color: white; font-weight: 600;">優先級</th>
+                            <th style="padding: 15px; text-align: left; color: white; font-weight: 600;">預期效益</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #e9ecef;">
+                            <td style="padding: 15px; font-weight: 600;">大型連鎖</td>
+                            <td style="padding: 15px;">東森寵物</td>
+                            <td style="padding: 15px;">全台最大連鎖</td>
+                            <td style="padding: 15px; text-align: center;"><span style="background: #ff6b6b; color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.9em; font-weight: 600;">最優先</span></td>
+                            <td style="padding: 15px;">品牌知名度提升</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e9ecef; background: #f8f9fa;">
+                            <td style="padding: 15px; font-weight: 600;">大型連鎖</td>
+                            <td style="padding: 15px;">寵物公園 PetPark</td>
+                            <td style="padding: 15px;">專業連鎖全台門市</td>
+                            <td style="padding: 15px; text-align: center;"><span style="background: #ff6b6b; color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.9em; font-weight: 600;">最優先</span></td>
+                            <td style="padding: 15px;">快速全台覆蓋</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e9ecef;">
+                            <td style="padding: 15px; font-weight: 600;">大型連鎖</td>
+                            <td style="padding: 15px;">毛孩市集</td>
+                            <td style="padding: 15px;">最大線上商城</td>
+                            <td style="padding: 15px; text-align: center;"><span style="background: #ff6b6b; color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.9em; font-weight: 600;">最優先</span></td>
+                            <td style="padding: 15px;">線上線下整合</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="strategy">
+            <div class="main-card">
+                <h2 class="card-title">B2B 開發策略與銷售話術</h2>
+                
+                <h3 style="color: #667eea; margin: 30px 0 15px 0; font-size: 1.2em;">🏥 針對動物醫院的銷售策略</h3>
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 40px;">
+                    <thead>
+                        <tr style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <th style="padding: 15px; text-align: left; color: white; font-weight: 600; width: 20%;">痛點</th>
+                            <th style="padding: 15px; text-align: left; color: white; font-weight: 600; width: 25%;">解決方案</th>
+                            <th style="padding: 15px; text-align: left; color: white; font-weight: 600; width: 55%;">銷售話術</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #e9ecef;">
+                            <td style="padding: 15px; font-weight: 600;">術後追蹤困難</td>
+                            <td style="padding: 15px;">24/7即時監測數據</td>
+                            <td style="padding: 15px; font-style: italic; color: #555;">「讓您隨時掌握術後恢復狀況，減少回診次數，提升醫療品質」</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e9ecef; background: #f8f9fa;">
+                            <td style="padding: 15px; font-weight: 600;">慢性病管理</td>
+                            <td style="padding: 15px;">長期健康數據追蹤</td>
+                            <td style="padding: 15px; font-style: italic; color: #555;">「腎病、心臟病患者的最佳監控工具，早期預警異常狀況」</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e9ecef;">
+                            <td style="padding: 15px; font-weight: 600;">收入來源單一</td>
+                            <td style="padding: 15px;">額外產品銷售</td>
+                            <td style="padding: 15px; font-style: italic; color: #555;">「增加醫院收入來源，提供飼主更完整的照護方案」</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3 style="color: #667eea; margin: 30px 0 15px 0; font-size: 1.2em;">🛒 針對寵物店的銷售策略</h3>
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 40px;">
+                    <thead>
+                        <tr style="background: linear-gradient(135deg, #92d050 0%, #6bcf7f 100%);">
+                            <th style="padding: 15px; text-align: left; color: white; font-weight: 600; width: 20%;">痛點</th>
+                            <th style="padding: 15px; text-align: left; color: white; font-weight: 600; width: 25%;">解決方案</th>
+                            <th style="padding: 15px; text-align: left; color: white; font-weight: 600; width: 55%;">銷售話術</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #e9ecef;">
+                            <td style="padding: 15px; font-weight: 600;">利潤空間縮小</td>
+                            <td style="padding: 15px;">高毛利商品（40-50%）</td>
+                            <td style="padding: 15px; font-style: italic; color: #555;">「高利潤科技產品，毛利率達40-50%，提升整體營收」</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e9ecef; background: #f8f9fa;">
+                            <td style="padding: 15px; font-weight: 600;">產品同質化</td>
+                            <td style="padding: 15px;">差異化競爭優勢</td>
+                            <td style="padding: 15px; font-style: italic; color: #555;">「獨特科技產品吸引年輕客群，與競爭對手明顯區隔」</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e9ecef;">
+                            <td style="padding: 15px; font-weight: 600;">庫存風險</td>
+                            <td style="padding: 15px;">寄賣制度</td>
+                            <td style="padding: 15px; font-style: italic; color: #555;">「低風險寄賣合作，賣出才收費，無庫存壓力」</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3 style="color: #667eea; margin: 30px 0 15px 0; font-size: 1.2em;">📦 合作模式比較</h3>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <th style="padding: 15px; text-align: left; color: white; font-weight: 600;">合作模式</th>
+                            <th style="padding: 15px; text-align: left; color: white; font-weight: 600;">適用對象</th>
+                            <th style="padding: 15px; text-align: left; color: white; font-weight: 600;">利潤分配</th>
+                            <th style="padding: 15px; text-align: left; color: white; font-weight: 600;">優勢</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #e9ecef;">
+                            <td style="padding: 15px; font-weight: 600;">批發合作</td>
+                            <td style="padding: 15px;">中大型店家</td>
+                            <td style="padding: 15px;">零售價50-60%進貨</td>
+                            <td style="padding: 15px;">利潤空間大·自主性高</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e9ecef; background: #f8f9fa;">
+                            <td style="padding: 15px; font-weight: 600;">寄賣合作</td>
+                            <td style="padding: 15px;">小型店家</td>
+                            <td style="padding: 15px;">銷售額30-40%歸店家</td>
+                            <td style="padding: 15px;">零風險·零庫存壓力</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e9ecef;">
+                            <td style="padding: 15px; font-weight: 600;">獨家經銷</td>
+                            <td style="padding: 15px;">區域領導店家</td>
+                            <td style="padding: 15px;">零售價45-50%進貨</td>
+                            <td style="padding: 15px;">區域保護·最優價格</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div style="background: linear-gradient(135deg, #fff3cd 0%, #ffe8a1 100%); border-left: 4px solid #ff6b6b; padding: 20px; border-radius: 10px; margin-top: 30px;">
+                    <p style="color: #856404; font-weight: 600; font-size: 1.1em; margin-bottom: 10px;">💡 重要提醒</p>
+                    <p style="color: #856404;">所有利潤分配方案為參考基準，實際合作條件需依個案情況調整。<strong style="color: #ff6b6b;">（待討論）</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-tab');
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    this.classList.add('active');
+                    document.getElementById(targetTab).classList.add('active');
+                });
+            });
+            
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers.forEach(stat => {
+                const text = stat.textContent;
+                if (text.includes('+')) return;
+                const target = parseInt(text.replace(/,/g, ''));
+                let current = 0;
+                const increment = target / 50;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    stat.textContent = Math.floor(current).toLocaleString();
+                }, 30);
+            });
+        });
+    </script>
+</body>
+</html>
